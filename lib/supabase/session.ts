@@ -2,7 +2,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { Tier } from "@/lib/tier";
-
+type CookieToSet = Parameters<CookieMethodsServer["setAll"]>[0][number];
 /**
  * Returns a cookie-aware Supabase client for use in Server Components,
  * Server Actions, and API Route Handlers.
@@ -19,7 +19,7 @@ export function createSessionClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
+      setAll(cookiesToSet: CookieToSet[]) {  
           // Server Components cannot set cookies — mutations happen in middleware.
           // This is intentionally a no-op here.
           try {
