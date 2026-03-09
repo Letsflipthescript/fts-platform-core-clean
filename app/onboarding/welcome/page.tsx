@@ -10,9 +10,9 @@ interface Props {
 export default async function WelcomePage({ searchParams }: Props) {
   const result = await verifyOnboardingToken(searchParams.token);
 if (!result.ok) {
-  const { reason } = result;
+  const reason = (result as { ok: false; reason: "missing" | "invalid" | "expired" }).reason;
   return <InvalidToken reason={reason} />;
-} 
+}
 
   const { payload } = result;
   const token = searchParams.token!;
