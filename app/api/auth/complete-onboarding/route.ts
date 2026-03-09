@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   // 2. Verify the onboarding token
   const result = await verifyOnboardingToken(token);
   if (!result.ok) {
-    return NextResponse.json({ error: `Token ${result.reason}.` }, { status: 401 });
+  return NextResponse.json({ error: "Invalid or expired onboarding token." }, { status: 401 });
   }
 
   const { contactId, firstName, tier } = result.payload;
