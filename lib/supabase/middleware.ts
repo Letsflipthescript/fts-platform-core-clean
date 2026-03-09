@@ -1,11 +1,8 @@
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-/**
- * Creates a Supabase client that can read and write cookies inside
- * Next.js middleware. Returns both the client and the (possibly mutated)
- * response so middleware can forward updated Set-Cookie headers.
- */
+type CookieToSet = Parameters<CookieMethodsServer["setAll"]>[0][number];
+
 export function createMiddlewareClient(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -17,12 +14,12 @@ export function createMiddlewareClient(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
+        setAll(cookiesToSet: CookieToSet[]) {
+          cookiesToSet.forEach(({ name, value }: CookieToSet) =>
             request.cookies.set(name, value)
           );
           response = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value, options }: CookieToSet) =>
             response.cookies.set(name, value, options)
           );
         },
