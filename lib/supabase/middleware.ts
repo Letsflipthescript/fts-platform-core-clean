@@ -1,7 +1,11 @@
-import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-type CookieToSet = Parameters<CookieMethodsServer["setAll"]>[0][number];
+type CookieToSet = {
+  name: string;
+  value: string;
+  options?: any;
+};
 
 export function createMiddlewareClient(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -15,13 +19,15 @@ export function createMiddlewareClient(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet: CookieToSet[]) {
-          cookiesToSet.forEach(({ name, value }: CookieToSet) =>
-            request.cookies.set(name, value)
-          );
+          cookiesToSet.forEach(({ name, value }) => {
+            request.cookies.set(name, value);
+          });
+
           response = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }: CookieToSet) =>
-            response.cookies.set(name, value, options)
-          );
+
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
         },
       },
     }
