@@ -10,7 +10,7 @@ interface Props {
 
 export default async function MenuPage({ searchParams }: Props) {
   const result = await verifyOnboardingToken(searchParams.token);
-  if (!result.ok) return <InvalidToken reason={result.reason} />;
+ if (!result.ok) return <InvalidToken reason="Invalid or expired onboarding token." />; 
 
   const { payload } = result;
   const token = searchParams.token!;
