@@ -23,7 +23,7 @@ const CHECKLIST = [
 
 export default async function SetupPage({ searchParams }: Props) {
   const result = await verifyOnboardingToken(searchParams.token);
-  if (!result.ok) return <InvalidToken reason={result.reason} />;
+if (!result.ok) return <InvalidToken reason="invalid" />;
 
   const { payload } = result;
   const token = searchParams.token!;
