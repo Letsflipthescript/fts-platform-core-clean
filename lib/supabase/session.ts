@@ -1,5 +1,5 @@
 import "server-only";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { Tier } from "@/lib/tier";
 type CookieToSet = Parameters<CookieMethodsServer["setAll"]>[0][number];
